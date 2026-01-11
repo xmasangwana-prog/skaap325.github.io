@@ -8,9 +8,9 @@ const FILES_TO_CACHE = [
     "/icon-512.png",
 
     /* ADD YOUR IMAGE FILES BELOW */
-    "/images/art1.jpg",
-    "/images/art2.jpg",
-    "/images/art3.jpg"
+    "/art1.jpg",
+    "/art2.jpg",
+    "/art3.jpg"
 ];
 
 self.addEventListener("install", event => {
@@ -28,3 +28,4 @@ self.addEventListener("fetch", event => {
         })
     );
 });
+
