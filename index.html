@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manskaap325 Portfolio</title>
+    <style>
+        /* Mobile bottom nav */
+        .bottom-nav {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.85);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                justify-content: space-around;
+                padding: 12px 0;
+                z-index: 200;
+            }
+
+            .bottom-nav a {
+                color: white;
+                text-decoration: none;
+                font-size: 0.85rem;
+                opacity: 0.8;
+            }
+
+            body {
+                padding-bottom: 70px;
+            }
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #0e0e0e;
+            color: #f2f2f2;
+            line-height: 1.6;
+        }
+
+        header {
+            min-height: 90vh;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)),
+                url("images/art1.jpg");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+
+        section {
+            max-width: 1000px;
+            margin: auto;
+            padding: 60px 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #444;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .art-card {
+            background: #161616;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .art-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .art-card img {
+            width: 100%;
+            display: block;
+        }
+
+        .art-card p {
+            padding: 15px;
+            font-size: 0.95rem;
+            color: #ddd;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 10px 15px 0 0;
+            color: #f2f2f2;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #555;
+            padding: 10px 18px;
+            border-radius: 30px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #f2f2f2;
+            color: #000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #000;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Mobile bottom nav */
+        .bottom-nav {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.85);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                justify-content: space-around;
+                padding: 12px 0;
+                z-index: 200;
+            }
+
+            .bottom-nav a {
+                color: white;
+                text-decoration: none;
+                font-size: 0.85rem;
+                opacity: 0.8;
+            }
+
+            body {
+                padding-bottom: 70px;
+            }
+        }
+
+        /* Fullscreen image overlay */
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        /* Mobile horizontal gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                display: flex;
+                overflow-x: auto;
+                gap: 16px;
+                padding-bottom: 10px;
+                scroll-snap-type: x mandatory;
+            }
+
+            .gallery img {
+                flex: 0 0 auto;
+                width: 75%;
+                scroll-snap-align: start;
+            }
+        }
+
+        /* App-style header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.55);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        .header-nav a:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header-nav {
+                display: none;
+            }
+
+            .header-left h1 {
+                font-size: 1.1rem;
+            }
+        }
+
+        .app-header {
+            transition: background 0.3s ease;
+        }
+
+        .app-header.scrolled {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .header-nav {
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.9);
+                padding: 10px 15px;
+                border-radius: 10px;
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Fix header size */
+        .app-header {
+            height: auto;
+            min-height: 56px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* FORCE FIX: stop header from being full screen on mobile */
+        @media (max-width: 768px) {
+            .app-header {
+                height: auto !important;
+                min-height: 56px !important;
+                max-height: 80px !important;
+                padding: 10px 16px !important;
+
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+
+            .app-header * {
+                margin: 0;
+            }
+        }
+
+        /* ===== CLEAN MOBILE-SAFE HEADER ===== */
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        /* Inner bar (THIS controls height) */
+        .header-inner {
+            height: 56px;
+            /* LOCKED HEIGHT */
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Title */
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Menu button */
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Hidden dropdown menu */
+        .header-menu {
+            display: none;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 10px 16px;
+        }
+
+        /* Menu links */
+        .header-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 0;
+        }
+
+        /* Show menu */
+        .header-menu.show {
+            display: flex;
+        }
+
+        /* Desktop view */
+        @media (min-width: 769px) {
+            .menu-btn {
+                display: none;
+            }
+
+            .header-menu {
+                display: flex !important;
+                flex-direction: row;
+                gap: 20px;
+                background: none;
+                padding: 0 16px 12px;
+            }
+        }
+
+        /* ===== HARD-LOCKED MOBILE HEADER ===== */
+
+        .app-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 56px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .header-bar {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.6rem;
+        }
+
+        /* Push content below header */
+        body {
+            padding-top: 56px;
+        }
+
+        /* Mobile dropdown menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 56px;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            flex-direction: column;
+        }
+
+        .mobile-menu a {
+            padding: 14px 20px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-menu.show {
+            display: flex;
+        }
+
+        /* Desktop */
+        @media (min-width: 769px) {
+            .menu-btn {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex !important;
+                position: static;
+                flex-direction: row;
+                justify-content: center;
+                background: none;
+            }
+
+            body {
+                padding-top: 0;
+            }
+        }
+
+        /* Header bar layout fix */
+        .header-bar {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+        }
+
+        /* Artist name on the left */
+        .logo {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Push menu button to the far right */
+        .menu-btn {
+            margin-left: auto;
+            /* THIS is the key line */
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.6rem;
+        }
+    </style>
+
+</head>
+<div id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img">
+</div>
+<script>
+    function openLightbox(src) {
+        document.getElementById("lightbox").style.display = "flex";
+        document.getElementById("lightbox-img").src = src;
+    }
+
+    function closeLightbox() {
+        document.getElementById("lightbox").style.display = "none";
+    }
+</script>
+
+
+<body>
+
+    <header class="app-header">
+        <div class="header-bar">
+            <span class="logo">Manskaap325</span>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </header>
+
+    <nav class="mobile-menu" id="menu">
+        <a href="#about" onclick="toggleMenu()">About</a>
+        <a href="#music" onclick="toggleMenu()">Music</a>
+        <a href="#gallery" onclick="toggleMenu()">Gallery</a>
+        <a href="#press" onclick="toggleMenu()">Press</a>
+    </nav>
+
+    <section>
+        <h2>About Manskaap325</h2>
+        <p><strong>Manskaap325</strong> is an independent artist and producer driven by intensity, originality, and raw
+            expression. Blending electronic, dance, and Afro-influenced sounds, his work is unapologetic, energetic, and
+            emotionally charged.</p>
+        <p>Every release is built with intention, not to follow trends, but to create an unmistakable sound and
+            presence. Manskaap325 represents independence, creative control, and growth through sound. This is more than
+            music. It is a statement, a movement, and a reflection of identity.</p>
+        <p>Welcome to the world of Manskaap325.</p>
+    </section>
+
+    <section>
+        <h2>Gallery</h2>
+
+        <div class="gallery">
+            <img src="images/art1.jpg" onclick="openLightbox(this.src)">
+            <img src="images/art2.jpg" onclick="openLightbox(this.src)">
+            <img src="images/art3.jpg" onclick="openLightbox(this.src)">
+            <img src="images/art4.jpg" onclick="openLightbox(this.src)">
+        </div>
+    </section>
+
+    <section>
+        <h2>Watch & Listen</h2>
+
+        <div style="position:relative;padding-top:56.25%;margin-top:20px;">
+            <iframe src="https://youtube.com/embed/videoseries?list=PLqbvyA-4tsqHwp0Twl-n-3FMH1OjyEtAh"
+                style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+    </section>
+
+    <section class="contact">
+        <h2>Contact</h2>
+        <p>Email: manskaap325@gmail.com
+        <h2>Music & Links</h2>
+
+        <p>Listen and connect with Manskaap325:</p>
+
+        <div class="social-links">
+            <a href="https://music.apple.com/us/artist/manskaap325/1596586047" target="_blank">Apple Music</a>
+            <a href="https://open.spotify.com/artist/3V9UX0MIN8mhaUyKRfFkKh?si=AkkvnFmeSAiYB_zN_uZPFQ"
+                target="_blank">Spotify</a>
+            <a href="www.youtube.com/@manskaap325" target="_blank">YouTube</a>
+            <a href="https://on.soundcloud.com/mhtbDuxHKCPgSEHUkG" target="_blank">SoundCloud</a>
+            <a href="https://www.instagram.com/manskaap325/" target="_blank">Instagram</a>
+            <a href="https://www.tiktok.com/@manskaap_325" target="_blank">TikTok</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>©2026 Manskaap325</p>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+        }
+    </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js");
+        }
+    </script>
+    <script>
+        if ("Notification" in window) {
+            console.log("Notifications supported");
+        }
+    </script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            menu.classList.toggle("show");
+        }
+    </script>
+
+
+</body>
+
+</html>
