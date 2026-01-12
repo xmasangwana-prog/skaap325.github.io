@@ -85,35 +85,28 @@
             padding-bottom: 5px;
         }
 
+        /* ===== CLEAN MODERN GALLERY ===== */
+
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
         }
 
-        .art-card {
-            background: #161616;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .art-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        .art-card img {
+        .gallery img {
             width: 100%;
-            display: block;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
         }
 
-        .art-card p {
-            padding: 15px;
-            font-size: 0.95rem;
-            color: #ddd;
+        /* Desktop */
+        @media (min-width: 769px) {
+            .gallery {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
+
 
         .social-links a {
             display: inline-block;
@@ -218,11 +211,25 @@
                 scroll-snap-type: x mandatory;
             }
 
-            .gallery img {
-                flex: 0 0 auto;
-                width: 75%;
-                scroll-snap-align: start;
+            @media (max-width: 768px) {
+                .gallery img {
+                    flex: 0 0 auto;
+                    width: 240px;
+                    /* FIXED card width */
+                    height: 160px;
+                    /* FIXED card height */
+                    object-fit: cover;
+                    /* Crop nicely */
+                    border-radius: 10px;
+                }
             }
+
+            .gallery img {
+                max-width: 20%;
+                height: auto;
+                display: block;
+            }
+
         }
 
         /* App-style header */
@@ -510,6 +517,30 @@
             color: white;
             font-size: 1.6rem;
         }
+
+        /* ===== SLIDESHOW ===== */
+        .slideshow {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin: 20px 0 30px;
+            overflow: hidden;
+            border-radius: 14px;
+        }
+
+        .slideshow img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .slideshow img.active {
+            opacity: 1;
+        }
     </style>
 
 </head>
@@ -558,13 +589,27 @@
     <section>
         <h2>Gallery</h2>
 
+        <!-- Slideshow -->
+        <div class="slideshow">
+            <img src="https://raw.githubusercontent.com/xmasangwana-prog/Images/refs/heads/main/lluxe_fest_20250921_4.jpg"
+                class="slide active">
+            <img src="https://raw.githubusercontent.com/xmasangwana-prog/Images/refs/heads/main/file_00000000bdec61f9ab37dfb4bbbde45e.png"
+                class="slide">
+            <img src="./images/art3.jpg" class="slide">
+            <img src="./images/art4.jpg" class="slide">
+        </div>
+
+        <!-- Gallery thumbnails -->
         <div class="gallery">
-            <img src="images/art1.jpg" onclick="openLightbox(this.src)">
-            <img src="images/art2.jpg" onclick="openLightbox(this.src)">
-            <img src="images/art3.jpg" onclick="openLightbox(this.src)">
-            <img src="images/art4.jpg" onclick="openLightbox(this.src)">
+            <img src="https://raw.githubusercontent.com/xmasangwana-prog/Images/refs/heads/main/lluxe_fest_20250921_4.jpg"
+                onclick="openLightbox(this.src)">
+            <img src="https://raw.githubusercontent.com/xmasangwana-prog/Images/refs/heads/main/file_00000000bdec61f9ab37dfb4bbbde45e.png"
+                onclick="openLightbox(this.src)">
+            <img src="./images/art3.jpg" onclick="openLightbox(this.src)">
+            <img src="./images/art4.jpg" onclick="openLightbox(this.src)">
         </div>
     </section>
+
 
     <section>
         <h2>Watch & Listen</h2>
@@ -621,6 +666,16 @@
             const menu = document.getElementById("menu");
             menu.classList.toggle("show");
         }
+    </script>
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll(".slide");
+
+        setInterval(() => {
+            slides.forEach(slide => slide.classList.remove("active"));
+            slideIndex = (slideIndex + 1) % slides.length;
+            slides[slideIndex].classList.add("active");
+        }, 4000);
     </script>
 
 
